@@ -23,7 +23,7 @@ void readHighScores() {
 	}
 }
 
-void writeHighScores() {
+static void writeHighScores() {
 	FILE *file = fopen("highscores.txt", "w+");
 	if (file) {
 		for (int i = 0; i < numberOfHighScores; i++) {
@@ -39,7 +39,7 @@ void processScore(float score) {
         printf("Your score: %.3f seconds\n", score);
         if (numberOfHighScores < MAX_NUMBER_OF_HIGH_SCORES || score < scores[numberOfHighScores - 1].score) {
                 printf("Congratulations! You made it to the high scores!\n");
-                printf("Enter your first name: ");
+                printf("Enter your quote: ");
                 char name[30] = {0};
                 fgets(name, sizeof(name), stdin);
                 // Remove newline character if present
