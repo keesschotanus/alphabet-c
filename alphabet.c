@@ -7,6 +7,8 @@
 
 #include "alphabet.h"
 
+#define NANOSECONDS_PER_SECOND 1e9f
+
 int main(void) {
 	float times[LETTERS];
 
@@ -22,18 +24,16 @@ int main(void) {
 	return EXIT_SUCCESS;
 }
 
-void init() {
-	if (setupTerminal() != 0) {
+void init(void) {
+	puts("Alphabet game");
+	puts("Type the alphabet as fast as you can, after pressing enter!");
+	getchar();
+	puts("Go!");
+
+	if (setupTerminal() == -1) {
 		fprintf(stderr, "Failed to set up terminal\n");
 		exit(EXIT_FAILURE);
 	}
-	atexit(resetTerminal);
-
-	puts("Alphabet game");
-	puts("Type the alphabet as fast as you can!");
-	puts("Press any key to start...");
-	getchar();
-	puts("Go!");
 }
 
 static char *alphabet = "abcdefghijklmnopqrstuvwxyz";
@@ -41,20 +41,24 @@ static char *alphabet = "abcdefghijklmnopqrstuvwxyz";
 float processInput(float times[LETTERS]) {
 	struct timespec start_time, end_time;
 	float totalTime = 0.0f;
-	char letter;
+	int letter;
 
 	for (int i = 0; i < LETTERS; i++) {
 		clock_gettime(CLOCK_MONOTONIC, &start_time);
 		do {
 			letter = getchar();
-			if (tolower(letter) != alphabet[i]) {
+			if (letter == EOF) {
+				fprintf(stderr, "Error reading input\n");
+				exit(EXIT_FAILURE);
+			}
+			if (tolower((unsigned char)letter) != alphabet[i]) {
 				putchar('\a');
 			}
-		} while (tolower(letter) != alphabet[i]);
+		} while (tolower((unsigned char)letter) != alphabet[i]);
 		clock_gettime(CLOCK_MONOTONIC, &end_time);
 
 		float time = (end_time.tv_sec - start_time.tv_sec) + 
-           		(end_time.tv_nsec - start_time.tv_nsec) / 1e9f; 
+           		(end_time.tv_nsec - start_time.tv_nsec) / NANOSECONDS_PER_SECOND; 
 		times[i] = time;
 		totalTime += time;
 		printf("%c (%.3fs)\n", letter, times[i]);

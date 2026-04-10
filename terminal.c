@@ -2,6 +2,7 @@
  * @brief Setsup the terminal for single character mode
  */
 
+#include <stdio.h>
 #include <termios.h>
 #include <unistd.h>
 
@@ -14,11 +15,17 @@ static struct termios originalTtystate;
  */
 int setupTerminal() {
 	struct termios ttystate;
-	tcgetattr(STDIN_FILENO, &ttystate);
+
+	if (tcgetattr(STDIN_FILENO, &ttystate) == -1) {
+		perror("tcgetattr");
+		return -1;
+	}
+
 	originalTtystate = ttystate;
 	ttystate.c_lflag &= ~(ICANON | ECHO);
 	// read one char at a time
 	ttystate.c_cc[VMIN] = 1;
+	ttystate.c_cc[VTIME] = 0;
 	// set the terminal attributes immediately			
 	return tcsetattr(STDIN_FILENO, TCSANOW, &ttystate);	
 }

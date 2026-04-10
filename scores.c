@@ -8,14 +8,14 @@
 static int numberOfHighScores = 0;
 static highScore scores[MAX_NUMBER_OF_HIGH_SCORES];
 
-void readHighScores() {
+void readHighScores(void) {
 	FILE *file = fopen("highscores.txt", "r");
 	if (file) {
 		while (fscanf(file, "%f %30[^\n]",
                                 &scores[numberOfHighScores].score,
-                                scores[numberOfHighScores].name) == 2) {
+                                scores[numberOfHighScores].quote) == 2) {
         		++numberOfHighScores;
-        		// Skip the newline character after the name
+        		// Skip the newline character after the quote
         		fgetc(file);
     		}
     
@@ -27,7 +27,7 @@ static void writeHighScores() {
 	FILE *file = fopen("highscores.txt", "w+");
 	if (file) {
 		for (int i = 0; i < numberOfHighScores; i++) {
-			fprintf(file, "%.3f %s\n", scores[i].score, scores[i].name);
+			fprintf(file, "%.3f %s\n", scores[i].score, scores[i].quote);
 		}
     		fclose(file);
 	} else {
@@ -40,19 +40,19 @@ void processScore(float score) {
         if (numberOfHighScores < MAX_NUMBER_OF_HIGH_SCORES || score < scores[numberOfHighScores - 1].score) {
                 printf("Congratulations! You made it to the high scores!\n");
                 printf("Enter your quote: ");
-                char name[30] = {0};
-                fgets(name, sizeof(name), stdin);
+                char quote[30] = {0};
+                fgets(quote, sizeof(quote), stdin);
                 // Remove newline character if present
-                name[strcspn(name, "\n")] = '\0';
+                quote[strcspn(quote, "\n")] = '\0';
 
-                // Insert the new score in the correct position
-                int i = numberOfHighScores - 1;
-                while (i >= 0 && scores[i].score > score) {
-                        scores[i + 1] = scores[i];
-                        i--;
+                int insertScorePosition = findHighScorePosition(score);
+                // Shift elements to make room for the new score
+                for (int i = numberOfHighScores; i > insertScorePosition; i--) {
+                        scores[i] = scores[i - 1];
                 }
-                scores[i + 1].score = score;
-                snprintf(scores[i + 1].name, sizeof(scores[i + 1].name), "%s", name);
+
+                scores[insertScorePosition].score = score;
+                snprintf(scores[insertScorePosition].quote, sizeof(scores[insertScorePosition].quote), "%s", quote);
 
                 if (numberOfHighScores < MAX_NUMBER_OF_HIGH_SCORES) {
                         numberOfHighScores++;
@@ -62,5 +62,15 @@ void processScore(float score) {
         } else {
                 printf("Sorry, you did not make it to the high scores.\n");
         }
+}
+
+int findHighScorePosition(float score) {
+        for (int i = 0; i < numberOfHighScores; i++) {
+                if (score < scores[i].score) {
+                        return i;
+                }
+        }
+
+        return numberOfHighScores;
 }
 
