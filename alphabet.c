@@ -58,7 +58,7 @@ float processInput(float times[LETTERS]) {
 		clock_gettime(CLOCK_MONOTONIC, &end_time);
 
 		float time = (end_time.tv_sec - start_time.tv_sec) + 
-           		(end_time.tv_nsec - start_time.tv_nsec) / NANOSECONDS_PER_SECOND; 
+		   		(end_time.tv_nsec - start_time.tv_nsec) / NANOSECONDS_PER_SECOND; 
 		times[i] = time;
 		totalTime += time;
 		printf("%c (%.3fs)\n", letter, times[i]);
