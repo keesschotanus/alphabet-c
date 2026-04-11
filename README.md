@@ -26,7 +26,8 @@ My second C program was actually a COBOL generator and no the alphabet game.
 Since I'm on Linux, this program will only run on Linux.
 Compile and execute it using:
 ```bash
-gcc *.c -o alphabet
+make
+# or run: gcc *.c -o alphabet
 ./alphabet
 ```
 
@@ -39,6 +40,18 @@ Sometimes I had to turn AI off, to think for myself.
 
 The code in the terminal.c file was particularly troublesome, since the terminal
 by default works on a line-by-line basis.
+
+## SonarQube
+
+I installed the bear module using:
+```bash
+sudo apt update && sudo apt install -y bear
+```
+Then I ran the bear tool to generate the compile_commands.json file like this:
+```bash
+bear -- gcc *.c -o alphabet
+```
+
 
 
 

@@ -1,0 +1,38 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-c",
+      "-o",
+      "alphabet",
+      "alphabet.c"
+    ],
+    "directory": "/home/kees/projects/c/alphabet-c",
+    "file": "/home/kees/projects/c/alphabet-c/alphabet.c",
+    "output": "/home/kees/projects/c/alphabet-c/alphabet"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-c",
+      "-o",
+      "alphabet",
+      "scores.c"
+    ],
+    "directory": "/home/kees/projects/c/alphabet-c",
+    "file": "/home/kees/projects/c/alphabet-c/scores.c",
+    "output": "/home/kees/projects/c/alphabet-c/alphabet"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-c",
+      "-o",
+      "alphabet",
+      "terminal.c"
+    ],
+    "directory": "/home/kees/projects/c/alphabet-c",
+    "file": "/home/kees/projects/c/alphabet-c/terminal.c",
+    "output": "/home/kees/projects/c/alphabet-c/alphabet"
+  }
+]
